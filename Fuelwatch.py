@@ -7,16 +7,12 @@ import webbrowser
 def generate_url():
 
     # Declaring an empty list
-    link = []
-
-    # RSS feed link for all metro suburbs for unleaded Petrol
-    mainlink = "http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?"
-    link.append(mainlink)
-
-    # RSS Feed for next day fuel rates, only available after 2.30PM
-    tomm_data = "http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Day=tomorrow"
-    link.append(tomm_data)
-
+    link = ["http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Product=2&Region=26",
+            "http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Product=2&Region=26&Day=tomorrow",
+            "http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Product=2&Region=25",
+            "http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Product=2&Region=25&Day=tomorrow"
+            ]
+    
     return(link)
 
 def get_data():
@@ -58,7 +54,7 @@ def get_data():
         # Declare a string to hold table row data
         Table_body = ''
 
-        for i in list_data:            
+        for i in list_data:
             table_row ="<tr><td>{Price}</td><td>{Location}</td><td>{Address}</td><td>{phone}</td><td>{brand}</td><td>{date}</td></tr>".format(**i)
             #%(i['Price'],i['Location'],i['Address'],i['phone'],i['brand'],i['date'])
             Table_body += table_row
@@ -85,9 +81,9 @@ def get_data():
                           </tbody>
                        </table>
                           </body>
-                          </html>""".format(Table_body)        
+                          </html>""".format(Table_body)
 
-        
+
 
 
     #Open File to write HTML Data
@@ -95,8 +91,8 @@ def get_data():
     with open('fuelwatch.html','w') as f:
         f.write(template)
 
-
-
-
+#Change path to reflect file location
+filename = "E:\Material\Django\Fuelwatch\fuelwatch.html" 
+webbrowser.open_new_tab(filename)
 
 get_data()
