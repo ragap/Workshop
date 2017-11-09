@@ -1,19 +1,19 @@
-#import urllib.request
+# Feed parser is to parse XML RSS feed data
+# To know more about XML RSS "https://www.w3schools.com/xml/xml_rss.asp"
 import feedparser
 import webbrowser
 
+import itertools
+
 #def get_fuel_watch_xml(product,brand,region,suburb,surrounding,date):
 
-def generate_url():
+def generate_url(Product,Region):
+    link = []
+    for i  in itertools.product(Product,Region):
+        gen_url = ("http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Product={}&Region={}".format(*i))
+        link.append(gen_url)
 
-    # Declaring an empty list
-    link = ["http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Product=2&Region=26",
-            "http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Product=2&Region=26&Day=tomorrow",
-            "http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Product=2&Region=25",
-            "http://www.fuelwatch.wa.gov.au/fuelwatch/fuelWatchRSS?Product=2&Region=25&Day=tomorrow"
-            ]
-    
-    return(link)
+    return (link)
 
 def get_data():
 
@@ -22,20 +22,22 @@ def get_data():
     list_data =[]
 
     #Get the List of URL's to Parse
-    list = generate_url()
-    print (list)
+    #Delcare a list
+    Product= [1,2]
+    Region = [25,26]
 
-
+    url = generate_url(Product,Region)
+    
+    print(url)
+    
     #Parse the url's in list using feedparser
-    for url in list:
-        list_parse = feedparser.parse(url)
+    for i in url:
+        print(i)
+        list_parse = feedparser.parse(i)
+        
 
         # channel elements are available in fuel.feed
         title = list_parse.feed.title
-        print (title)
-        print (list_parse.feed.link)
-        print (list_parse.feed.description)
-
 
         # item elements are available in x.entries
         for i in list_parse.entries:
@@ -50,6 +52,7 @@ def get_data():
 
             list_data.append(dic_data)
             list_data = sorted(list_data, key=lambda k: k['Price'])
+            
 
         # Declare a string to hold table row data
         Table_body = ''
@@ -92,7 +95,7 @@ def get_data():
         f.write(template)
 
 #Change path to reflect file location
-filename = "E:\Material\Django\Fuelwatch\fuelwatch.html" 
-webbrowser.open_new_tab(filename)
+#filename = "E:\Material\Django\Fuelwatch\fuelwatch.html"
+#webbrowser.open_new_tab(filename)
 
 get_data()
